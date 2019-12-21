@@ -6,6 +6,8 @@ const url = "https://api.poeditor.com/v2";
 function postKeyVal(key, value, done) {
   const config = vscode.workspace.getConfiguration("brainz");
   const apiKey = config && config.get("poeditorApiKey");
+  const projectId = 305197;
+  const defaultLang = "cs";
 
   let languages = [
     {
@@ -27,27 +29,24 @@ function postKeyVal(key, value, done) {
     {
       form: {
         api_token: apiKey,
-        id: 305197,
+        id: projectId,
         data: JSON.stringify(terms)
       }
     },
     (err, res) => {
       if (!err && res.statusCode == 200) {
-        console.log(res);
-
         request.post(
           `${url}/languages/update`,
           {
             form: {
               api_token: apiKey,
-              id: 305197,
-              language: "cs",
+              id: projectId,
+              language: defaultLang,
               data: JSON.stringify(languages)
             }
           },
           (err, res) => {
             if (!err && res.statusCode == 200) {
-              console.log(res);
               done();
             }
           }

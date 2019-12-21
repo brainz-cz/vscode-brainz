@@ -17,30 +17,38 @@ function parsePath() {
 }
 
 function prepareTransKey() {
+  // TODO: detekovat element, přidat další identifikátor ke klíči, aby byl víc vypovídající
+  // zkusit najít jak udělat GET vscode breadcrumbs
+
   let key = parsePath();
-
-  // TODO: detekovat element, případně kolik je již překladů v dokumentu, nebo jiný identifikátor
-
-  return key;
+  let documentText = vscode.window.activeTextEditor.document.getText();
+  let count = (documentText.match(new RegExp(key, "g")) || []).length;
+  return `${key}-${count + 1}`;
 }
 
 function prepareTransFunction(key) {
   const editor = vscode.window.activeTextEditor;
+
   const text = editor.document.getText(editor.selection);
+
   const lang = editor.document.languageId;
+
+  console.log(text);
+
+  let isInFunction = /^["`'][\S\s]*["`']$/.test(text);
 
   // TODO: vezme upravený klíč a udělá funkci pro překlad, zde bude potřeba detekovat
   // kde se konkrétně SELECT nachází
   // zda je v HTML, nebo v PHP, nebo v JS
 
   if (lang === "vue") {
-    if (/^["`'][\S\s]*["`']$/.test(text)) {
+    if (isInFunction) {
       key = `this.$t('${key}')`;
     } else {
       key = `{{ $t('${key}') }}`;
     }
   } else if (lang === "php") {
-    if (/^["`'][\S\s]*["`']$/.test(text)) {
+    if (isInFunction) {
       key = `trans('${key}')`;
     } else {
       key = `{!! trans('${key}') !!}`;
