@@ -14,20 +14,22 @@
 	],
 	"main": "./src/main.js",
 	"contributes": {
-		"configuration":{
+		"configuration": {
 			"title": "BRAINZ",
 			"properties": {
 				"brainz.poeditorApiKey": {
 					"type": "string",
 					"default": "",
-					"description": "Paste here the API key of poeditor.com" 
+					"description": "Paste here the API key of poeditor.com"
 				}
 			}
 		},
-		"commands": [{
-            "command": "brainz.i18n",
-			"title": "BRAINZ: i18n"
-		}]
+		"commands": [
+			{
+				"command": "brainz.i18n",
+				"title": "BRAINZ: i18n"
+			}
+		]
 	},
 	"scripts": {
 		"test": "node ./test/runTest.js"
@@ -42,5 +44,9 @@
 		"mocha": "^6.2.2",
 		"typescript": "^3.6.4",
 		"vscode-test": "^1.2.2"
+	},
+	"dependencies": {
+		"request": "^2.88.0",
+		"request-promise": "^4.2.5"
 	}
 }
