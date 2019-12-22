@@ -6,6 +6,8 @@ const url = "https://api.poeditor.com/v2";
 function postKeyVal(key, value, done) {
   const config = vscode.workspace.getConfiguration("brainz");
   const apiKey = config && config.get("poeditorApiKey");
+
+  // TODO: předělat konfiguraci na lokálně načítající se
   const projectId = 305197;
   const defaultLang = "cs";
 

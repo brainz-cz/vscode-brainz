@@ -28,12 +28,8 @@ function prepareTransKey() {
 
 function prepareTransFunction(key) {
   const editor = vscode.window.activeTextEditor;
-
   const text = editor.document.getText(editor.selection);
-
   const lang = editor.document.languageId;
-
-  console.log(text);
 
   let isInFunction = /^["`'][\S\s]*["`']$/.test(text);
 
@@ -69,7 +65,7 @@ function init() {
   const text = editor.document.getText(editor.selection);
   const selection = editor.selection;
 
-  vscode.window
+  text && vscode.window
     .showInputBox({
       placeHolder: "Key for translated string",
       value: prepareTransKey()
