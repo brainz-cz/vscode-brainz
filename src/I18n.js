@@ -28,23 +28,30 @@ function prepareTransKey() {
 
 function prepareTransFunction(key) {
   const editor = vscode.window.activeTextEditor;
-  const text = editor.document.getText(editor.selection);
   const lang = editor.document.languageId;
 
-  let isInFunction = /^["`'][\S\s]*["`']$/.test(text);
+  let selection = new vscode.Range(
+    new vscode.Position(
+      editor.selection.start.line,
+      editor.selection.start.character - 1
+    ),
+    new vscode.Position(
+      editor.selection.end.line,
+      editor.selection.end.character + 1
+    )
+  );
 
-  // TODO: vezme upravený klíč a udělá funkci pro překlad, zde bude potřeba detekovat
-  // kde se konkrétně SELECT nachází
-  // zda je v HTML, nebo v PHP, nebo v JS
+  let text = editor.document.getText(selection);
+  let isInString = /^["`'][\S\s]*["`']$/.test(text.trim());
 
   if (lang === "vue") {
-    if (isInFunction) {
+    if (isInString) {
       key = `this.$t('${key}')`;
     } else {
       key = `{{ $t('${key}') }}`;
     }
   } else if (lang === "php") {
-    if (isInFunction) {
+    if (isInString) {
       key = `trans('${key}')`;
     } else {
       key = `{!! trans('${key}') !!}`;
@@ -65,23 +72,24 @@ function init() {
   const text = editor.document.getText(editor.selection);
   const selection = editor.selection;
 
-  text && vscode.window
-    .showInputBox({
-      placeHolder: "Key for translated string",
-      value: prepareTransKey()
-    })
-    .then(result => {
-      result &&
-        updateTrans(text, result, () => {
-          editor.edit(builder =>
-            builder.replace(selection, prepareTransFunction(result))
-          );
+  text &&
+    vscode.window
+      .showInputBox({
+        placeHolder: "Key for translated string",
+        value: prepareTransKey()
+      })
+      .then(result => {
+        result &&
+          updateTrans(text, result, () => {
+            editor.edit(builder =>
+              builder.replace(selection, prepareTransFunction(result))
+            );
 
-          vscode.window.showInformationMessage(
-            "Translated string was uploaded to poeditor.com"
-          );
-        });
-    });
+            vscode.window.showInformationMessage(
+              "Translated string was uploaded to poeditor.com"
+            );
+          });
+      });
 }
 
 module.exports = {
