@@ -2,10 +2,15 @@
 	"name": "brainz",
 	"displayName": "brainz",
 	"description": "",
-	"version": "0.0.1",
+	"icon": "ico.png",
+	"version": "0.0.3",
 	"author": {
 		"name": "Ladislav Janeček",
 		"email": "ladislavjanecek@gmail.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/brainz-cz/vscode-brainz"
 	},
 	"publisher": "ladislavjanecek",
 	"engines": {
@@ -51,7 +56,6 @@
 		"vscode-test": "^1.2.2"
 	},
 	"dependencies": {
-		"ambi": "^6.4.0",
 		"request": "^2.88.0",
 		"vsce": "^1.71.0"
 	}
